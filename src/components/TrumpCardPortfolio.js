@@ -20,7 +20,13 @@ const PokerTablePortfolio = () => {
     <div className="poker-table-portfolio">
       <div className="shortcut-cards">
         {[1, 2, 3].map(num => (
-          <div key={num} className="shortcut-card">{num}</div>
+          <motion.div
+            key={num}
+            className="shortcut-card"
+            whileHover={{ scale: 1.15, rotate: 5 }}
+          >
+            {num}
+          </motion.div>
         ))}
       </div>
       <div className="main-cards">
@@ -29,7 +35,7 @@ const PokerTablePortfolio = () => {
             key={card.id}
             className={`card ${flippedCard === card.id ? 'flipped' : ''}`}
             onClick={() => handleCardFlip(card.id)}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.1, rotateY: 5 }}
             layout
           >
             <div className="card-inner">
