@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 const PokerTablePortfolio = () => {
   const [flippedCard, setFlippedCard] = useState(null);
+  const [permanentlyFlippedCards, setPermanentlyFlippedCards] = useState([]);
 
   const cards = [
     { id: 1, title: 'About Me', content: 'Web developer passionate about creating unique experiences.' },
@@ -12,8 +13,22 @@ const PokerTablePortfolio = () => {
     { id: 5, title: 'Contact', content: 'Get in touch for collaborations or opportunities.' },
   ];
 
-  const handleCardFlip = (id) => {
-    setFlippedCard(flippedCard === id ? null : id);
+  const handleCardHover = (id) => {
+    if (!permanentlyFlippedCards.includes(id)) {
+      setFlippedCard(id);
+    }
+  };
+
+  const handleCardLeave = () => {
+    setFlippedCard(null);
+  };
+
+  const handleCardClick = (id) => {
+    if (!permanentlyFlippedCards.includes(id)) {
+      setPermanentlyFlippedCards([...permanentlyFlippedCards, id]);
+    } else {
+      setPermanentlyFlippedCards(permanentlyFlippedCards.filter(cardId => cardId !== id));
+    }
   };
 
   return (
@@ -23,31 +38,38 @@ const PokerTablePortfolio = () => {
           <motion.div
             key={num}
             className="shortcut-card"
-            whileHover={{ scale: 1.15, rotate: 5 }}
+            whileHover={{ scale: 1.2, rotate: 15 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
             {num}
           </motion.div>
         ))}
       </div>
       <div className="main-cards">
-        {cards.map((card, index) => (
-          <motion.div
-            key={card.id}
-            className={`card ${flippedCard === card.id ? 'flipped' : ''}`}
-            onClick={() => handleCardFlip(card.id)}
-            whileHover={{ scale: 1.1, rotateY: 5 }}
-            layout
-          >
-            <div className="card-inner">
-              <div className="card-front">
-                <h2>{card.title}</h2>
+        {cards.map((card) => {
+          const isFlipped = flippedCard === card.id || permanentlyFlippedCards.includes(card.id);
+          return (
+            <motion.div
+              key={card.id}
+              className={`card ${isFlipped ? 'flipped' : ''}`}
+              onMouseEnter={() => handleCardHover(card.id)}
+              onMouseLeave={handleCardLeave}
+              onClick={() => handleCardClick(card.id)}
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: 'spring', stiffness: 200 }}
+              layout
+            >
+              <div className="card-inner">
+                <div className="card-front">
+                  <h2>{card.title}</h2>
+                </div>
+                <div className="card-back">
+                  <p>{card.content}</p>
+                </div>
               </div>
-              <div className="card-back">
-                <p>{card.content}</p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );
