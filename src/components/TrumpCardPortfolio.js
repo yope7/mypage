@@ -1,76 +1,137 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const PokerTablePortfolio = () => {
-  const [flippedCard, setFlippedCard] = useState(null);
-  const [permanentlyFlippedCards, setPermanentlyFlippedCards] = useState([]);
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [dealtCards, setDealtCards] = useState([]);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 0,
+    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+  });
 
   const cards = [
-    { id: 1, title: 'About Me', content: 'Web developer passionate about creating unique experiences.' },
-    { id: 2, title: 'Web Skills', content: 'HTML, CSS, JavaScript, React, Vue.js, Node.js' },
-    { id: 3, title: 'Machine Learning', content: 'Python, TensorFlow, PyTorch, Scikit-learn' },
-    { id: 4, title: 'Study', content: 'Continuous learner, focusing on AI and cloud technologies' },
-    { id: 5, title: 'Contact', content: 'Get in touch for collaborations or opportunities.' },
+    { id: 1, title: 'About Me', summary: 'Web developer passionate about creating unique experiences.' },
+    { id: 2, title: 'Web Skills', summary: 'HTML, CSS, JavaScript, React, Vue.js, Node.js' },
+    { id: 3, title: 'Machine Learning', summary: 'Python, TensorFlow, PyTorch, Scikit-learn' },
+    { id: 4, title: 'Study', summary: 'Continuous learner, focusing on AI and cloud technologies' },
+    { id: 5, title: 'Contact', summary: 'Get in touch for collaborations or opportunities.' },
   ];
 
-  const handleCardHover = (id) => {
-    if (!permanentlyFlippedCards.includes(id)) {
-      setFlippedCard(id);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
 
-  const handleCardLeave = () => {
-    setFlippedCard(null);
-  };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const handleCardClick = (id) => {
-    if (!permanentlyFlippedCards.includes(id)) {
-      setPermanentlyFlippedCards([...permanentlyFlippedCards, id]);
+  useEffect(() => {
+    const dealCards = async () => {
+      for (let i = 0; i < cards.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        setDealtCards(prev => [...prev, cards[i].id]);
+      }
+    };
+    dealCards();
+  }, []);
+
+  const handleCardHover = (id) => setHoveredCard(id);
+  const handleCardLeave = () => setHoveredCard(null);
+  const handleCardClick = (id) => setSelectedCard(id);
+
+  const cardPosition = (index) => {
+    const totalCards = cards.length;
+    const isMobile = windowSize.width <= 768;
+    
+    if (isMobile) {
+      const verticalSpacing = windowSize.height / (totalCards + 1);
+      return {
+        left: '50%',
+        top: `${verticalSpacing * (index + 1)}px`,
+        transform: 'translateX(-50%)',
+      };
     } else {
-      setPermanentlyFlippedCards(permanentlyFlippedCards.filter(cardId => cardId !== id));
+      const angle = (index - (totalCards - 1) / 2) * 20;
+      const radius = Math.min(windowSize.width, windowSize.height) * 0.35;
+      return {
+        left: `calc(50% + ${radius * Math.sin(angle * Math.PI / 180)}px)`,
+        top: `calc(50% + ${radius * Math.cos(angle * Math.PI / 180)}px)`,
+        transform: 'translate(-50%, -50%)',
+      };
     }
   };
 
   return (
     <div className="poker-table-portfolio">
-      <div className="shortcut-cards">
-        {[1, 2, 3].map(num => (
+      <div className="deck">
+        {cards.map((card, index) => (
           <motion.div
-            key={num}
-            className="shortcut-card"
-            whileHover={{ scale: 1.2, rotate: 15 }}
-            transition={{ type: 'spring', stiffness: 300 }}
+            key={card.id}
+            className="card"
+            initial={{ opacity: 0, scale: 0.7, rotateY: 180 }}
+            animate={dealtCards.includes(card.id) ? {
+              opacity: 1,
+              scale: 1,
+              rotateY: 0,
+              ...cardPosition(index),
+            } : {}}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 20,
+              duration: 0.5,
+            }}
           >
-            {num}
-          </motion.div>
-        ))}
-      </div>
-      <div className="main-cards">
-        {cards.map((card) => {
-          const isFlipped = flippedCard === card.id || permanentlyFlippedCards.includes(card.id);
-          return (
             <motion.div
-              key={card.id}
-              className={`card ${isFlipped ? 'flipped' : ''}`}
+              className={`card-inner ${hoveredCard === card.id ? 'hovered' : ''}`}
               onMouseEnter={() => handleCardHover(card.id)}
               onMouseLeave={handleCardLeave}
               onClick={() => handleCardClick(card.id)}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              layout
+              whileHover={{ 
+                scale: 1.05, 
+                rotateY: 180,
+                transition: { duration: 0.3 }
+              }}
             >
-              <div className="card-inner">
-                <div className="card-front">
-                  <h2>{card.title}</h2>
-                </div>
-                <div className="card-back">
-                  <p>{card.content}</p>
-                </div>
+              <div className="card-front">
+                <h2>{card.title}</h2>
+              </div>
+              <div className="card-back">
+                <p>{card.summary}</p>
               </div>
             </motion.div>
-          );
-        })}
+          </motion.div>
+        ))}
       </div>
+
+      <AnimatePresence>
+        {selectedCard && (
+          <motion.div 
+            className="card-popup-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedCard(null)}
+          >
+            <motion.div 
+              className="card-popup"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2>{cards.find(c => c.id === selectedCard).title}</h2>
+              <p>{cards.find(c => c.id === selectedCard).summary}</p>
+              <button onClick={() => setSelectedCard(null)}>Close</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

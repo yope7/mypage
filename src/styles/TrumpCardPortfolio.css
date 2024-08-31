@@ -3,62 +3,36 @@
   min-height: 100vh;
   padding: 2rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.shortcut-cards {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.shortcut-card {
-  width: 40px;
-  height: 60px;
-  background-color: white;
-  border: 1px solid #000;
-  border-radius: 5px;
-  display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  overflow: hidden;
+  position: relative;
 }
 
-.shortcut-card:hover {
-  transform: rotate(10deg);
-}
-
-.main-cards {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 4rem;
+.deck {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 .card {
-  position: relative;
-  width: 150px;
-  height: 200px;
+  position: absolute;
+  width: 180px;
+  height: 250px;
   perspective: 1000px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .card-inner {
-  position: relative;
   width: 100%;
   height: 100%;
-  text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+  position: relative;
 }
 
-.card.flipped .card-inner {
+.card:hover .card-inner {
   transform: rotateY(180deg);
 }
 
@@ -66,17 +40,32 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(255,255,255,0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover .card-front,
+.card:hover .card-back {
+  box-shadow: 
+    0 14px 28px rgba(0,0,0,0.25),
+    0 10px 10px rgba(0,0,0,0.22),
+    0 0 0 1px rgba(255,255,255,0.2);
 }
 
 .card-front {
   background-color: white;
   border: 2px solid #000;
+  z-index: 2;
 }
 
 .card-back {
@@ -85,29 +74,98 @@
   transform: rotateY(180deg);
 }
 
-.card-front h2, .card-back p {
-  margin: 0;
-  padding: 1rem;
-  font-size: 0.9rem;
+.card h2 {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
 }
 
-.hand-image {
-  position: absolute;
-  bottom: 0;
+.card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #000000;
+  text-align: center;
+}
+
+.card-popup-overlay {
+  position: fixed;
+  top: 0;
   left: 0;
-  width: 100px; /* 手の画像のサイズを調整 */
-  height: auto;
-  pointer-events: none;
-  z-index: 10; /* カードの上に表示 */
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.card-popup {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 
+    0 19px 38px rgba(0,0,0,0.30),
+    0 15px 12px rgba(0,0,0,0.22);
+}
+
+.card-popup h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.card-popup p {
+  color: #666;
+  line-height: 1.6;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.card-popup button {
+  align-self: flex-end;
+  background-color: #006633;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.card-popup button:hover {
+  background-color: #004d26;
 }
 
 @media (max-width: 768px) {
-  .main-cards {
-    flex-wrap: wrap;
+  .poker-table-portfolio {
+    padding: 1rem;
   }
-  
+
   .card {
-    width: 120px;
-    height: 160px;
+    width: 150px;
+    height: 210px;
+  }
+
+  .card h2 {
+    font-size: 1rem;
+  }
+
+  .card p {
+    font-size: 0.8rem;
+  }
+
+  .card-popup {
+    width: 95%;
+    max-height: 90vh;
   }
 }
