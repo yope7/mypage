@@ -1,29 +1,28 @@
 .poker-table-portfolio {
   background-color: #006633;
-  min-height: 100vh;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
   overflow: hidden;
-  position: relative;
-}
-
-.deck {
-  width: 100%;
-  height: 100%;
-  position: relative;
 }
 
 .card {
   position: absolute;
-  width: 180px;
-  height: 250px;
   perspective: 1000px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
+.card.dealt {
+  opacity: 1;
+}
+.card-back {
+  background-color: #f0f0f0;
+  border: 2px solid #000;
+  transform: rotateY(180deg);
+  color: #000;
+}
 .card-inner {
   width: 100%;
   height: 100%;
@@ -32,11 +31,8 @@
   position: relative;
 }
 
-.card:hover .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-front, .card-back {
+.card-front,
+.card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -47,44 +43,26 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 
-    0 4px 8px rgba(0,0,0,0.1),
-    0 0 0 1px rgba(255,255,255,0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.card:hover .card-front,
-.card:hover .card-back {
-  box-shadow: 
-    0 14px 28px rgba(0,0,0,0.25),
-    0 10px 10px rgba(0,0,0,0.22),
-    0 0 0 1px rgba(255,255,255,0.2);
+  padding: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card-front {
   background-color: white;
   border: 2px solid #000;
-  z-index: 2;
 }
 
-.card-back {
-  background-color: #f0f0f0;
-  border: 2px solid #000;
-  transform: rotateY(180deg);
-}
+
 
 .card h2 {
-  margin: 0 0 1rem;
-  font-size: 1.2rem;
-  color: #333;
+  font-size: 1em;
+  margin: 0;
   text-align: center;
 }
 
 .card p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #000000;
+  font-size: 0.8em;
+  margin: 0.5em 0 0;
   text-align: center;
 }
 
@@ -99,6 +77,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 20px;
 }
 
 .card-popup {
@@ -107,65 +86,59 @@
   border-radius: 15px;
   width: 90%;
   max-width: 400px;
-  max-height: 80vh;
-  overflow-y: auto;
-  position: relative;
+  height: 80vh;
+  max-height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 
-    0 19px 38px rgba(0,0,0,0.30),
-    0 15px 12px rgba(0,0,0,0.22);
+  overflow: hidden;
+}
+
+.card-popup-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .card-popup h2 {
   margin-top: 0;
-  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .card-popup p {
-  color: #666;
-  line-height: 1.6;
-  flex-grow: 1;
-  overflow-y: auto;
+  margin-bottom: 1rem;
+  text-align: left;
+  font-size: 75%;
 }
 
 .card-popup button {
   align-self: flex-end;
-  background-color: #006633;
+  padding: 1rem 3rem;
+  background-color: #015e2fc9;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 1rem;
+  cursor: 'pointer';
+
 }
 
 .card-popup button:hover {
-  background-color: #004d26;
+  background-color: #022915;
 }
 
 @media (max-width: 768px) {
-  .poker-table-portfolio {
-    padding: 1rem;
-  }
-
-  .card {
-    width: 150px;
-    height: 210px;
-  }
-
-  .card h2 {
-    font-size: 1rem;
-  }
-
-  .card p {
-    font-size: 0.8rem;
-  }
-
   .card-popup {
     width: 95%;
-    max-height: 90vh;
+    height: 90vh;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .card-popup {
+    height: 95vh;
   }
 }
