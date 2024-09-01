@@ -153,10 +153,10 @@ body {
 /* 水泳フラッグ */
 .swimming-flags {
   position: absolute;
-  top: 10rem;
+  top: 5rem;
   left: 0;
   right: 0;
-  height: 40px;
+  /* height: 40px; */
   display: flex;
   transform: scaleY(-1);
   justify-content: flex-start;
