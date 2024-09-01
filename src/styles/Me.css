@@ -1,0 +1,457 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --text-color: #333;
+  --bg-color: #f4f4f4;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+.portfolio {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ヒーローセクション */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  background-color: #90caf9;
+}
+
+.hero-content {
+  text-align: center;
+  color: rgb(24, 19, 51);
+  z-index: 10;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-size:1rem;
+
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 3rem;
+  font-weight: bold; 
+  margin-bottom: 1rem;
+}
+
+.hero-description {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #2980b9;
+}
+
+/* 水泳プールのエフェクト */
+.water-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 119, 182, 0.8) 0%,
+    rgba(0, 119, 182, 0.3) 50%,
+    rgba(173, 216, 230, 0.2) 100%
+  );
+  opacity: 1;
+}
+
+.pool-tiles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.pool-edge-top, .pool-edge-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffffff,
+    #ffffff 40px,
+    #2c3e50 40px,
+    #2c3e50 80px
+  );
+}
+
+.pool-edge-top {
+  top: 0;
+}
+
+.pool-edge-bottom {
+  bottom: 0;
+}
+
+.water-ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  animation: ripple 10s linear infinite;
+}
+
+@keyframes ripple {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  100% {
+    transform: translateX(-20px) translateY(-20px);
+  }
+}
+
+/* 水泳フラッグ */
+.swimming-flags {
+  position: absolute;
+  top: 10rem;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  transform: scaleY(-1);
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.flag-triangle {
+  transform-origin: center bottom;
+  animation: flag-wave 2s ease-in-out infinite alternate;
+  flex-shrink: 0;
+}
+
+.flag-triangle:nth-child(odd) {
+  animation-delay: -1s;
+}
+
+@keyframes flag-wave {
+  0% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}
+
+/* 魚のアニメーション */
+.fish-icon {
+  position: absolute;
+  font-size: 50px;
+  scale: 170%;
+  color: #094c79;
+  animation: swim 20s linear infinite, 
+             bob 3s ease-in-out infinite;
+  opacity: 0.2;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+@keyframes swim {
+  0%, 100% {
+    left: 20%;
+    transform: scaleX(1) translateY(0);
+  }
+  25% {
+    transform: scaleX(1) translateY(-15px);
+  }
+  49% {
+    left: 70%;
+    transform: scaleX(1) translateY(0);
+  }
+  50% {
+    left: 70%;
+    transform: scaleX(-1) translateY(0);
+  }
+  75% {
+    transform: scaleX(-1) translateY(-15px);
+  }
+  99% {
+    left: 20%;
+    transform: scaleX(-1) translateY(0);
+  }
+}
+
+.fish-icon:nth-child(1) {
+  top: 20%;
+  animation-delay: 0s;
+}
+
+.fish-icon:nth-child(2) {
+  top: 40%;
+  animation-delay: -5s;
+}
+
+.fish-icon:nth-child(3) {
+  top: 60%;
+  animation-delay: -10s;
+}
+
+/* セクション共通スタイル */
+section {
+  padding: 50px 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Aboutセクション */
+.about-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.profile-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Skillsセクション */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.skill-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.skill-item svg {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.skill-bar {
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.skill-level {
+  height: 100%;
+  background-color: var(--primary-color);
+}
+
+/* Projectsセクション */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.project-card h3,
+.project-card p {
+  padding: 10px;
+}
+
+/* Hobbiesセクション */
+.hobbies-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hobby-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.hobby-item svg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+/* Contactセクション */
+.contact-form {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.contact-form textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.contact-form button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: #2980b9;
+}
+/* ナビゲーションバーのスタイル */
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(52, 152, 219, 0.8); /* --primary-colorに近い青色で80%の不透明度 */
+    z-index: 1000;
+  }
+  
+  .nav-list {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 1rem;
+  }
+  
+  .nav-item {
+    margin: 0 1rem;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7); /* 薄い白色 */
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover,
+  .nav-item.active .nav-link {
+    color: white;
+  }
+  
+  /* レスポンシブデザイン用の追加スタイル */
+  @media screen and (max-width: 768px) {
+    .nav-list {
+      flex-wrap: wrap;
+    }
+  
+    .nav-item {
+      margin: 0.5rem;
+    }
+  }
+
+/* レスポンシブデザイン */
+@media screen and (max-width: 768px) {
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1.25rem;
+  }
+
+  .about-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .skills-grid,
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hobbies-container {
+    flex-direction: column;
+  }
+}
