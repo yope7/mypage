@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { 
   Camera, 
@@ -13,6 +13,39 @@ import {
 
 
 const Me = () => {
+
+  const bearRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (bearRef.current) {
+        const eyes = bearRef.current.querySelectorAll('.eye');
+        eyes.forEach(eye => {
+          const rect = eye.getBoundingClientRect();
+          const eyeCenterX = rect.left + rect.width / 3;
+          const eyeCenterY = rect.top + rect.height / 3;
+          
+          const angleRad = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+          
+          const pupil = eye.querySelector('.pupil');
+          if (pupil) {
+            const maxDistance = (rect.width - pupil.offsetWidth) / 6;
+            
+            const distanceX = Math.cos(angleRad) * maxDistance;
+            const distanceY = Math.sin(angleRad) * maxDistance;
+            
+            pupil.style.transform = `translate(${distanceX}px, ${distanceY}px)`;
+          }
+        });
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
   const [activeSection, setActiveSection] = useState('hero');
   const controls = useAnimation();
 
@@ -175,13 +208,14 @@ const Me = () => {
         animate={controls}
         transition={{ duration: 0.8 }}
       >
-        <div class="bear">
-        <div class="eye left"></div>
-        <div class="eye right"></div>
-        <div class="nose"></div>
-        <div class="arm"></div>
-        <div class="device"></div>
+        <div className="bear" ref={bearRef}>
+          <div className="eye left"><div className="pupil"></div></div>
+          <div className="eye right"><div className="pupil"></div></div>
+          <div className="nose"></div>
+          <div className="device"></div>
+          <div className="arm"></div>
         </div>
+        
         <h2 className="section-title">Skills</h2>
         <div className="skills-grid">
           {skillsData.map((skill, index) => (

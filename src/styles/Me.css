@@ -4,7 +4,7 @@
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
   --text-color: #333;
-  --bg-color: #f4f4f4;
+  --bg-color: #9fa2ac;
 }
 
 * {
@@ -441,13 +441,25 @@ section {
 /* Eyes */
 .eye {
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background-color: black;
+    width: 40px;
+    height: 40px;
+    background-color: white;
     border-radius: 50%;
-    top: 60px;
+    top: 50px;
+    overflow: visible;  /* 目の動きが見えるようにする */
+    border: 2px solid #fcf8f8; 
 }
 
+.pupil {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .eye.left { left: 60px; }
 .eye.right { right: 60px; }
 
@@ -485,7 +497,7 @@ section {
     right: 10px;
     border-radius: 20px;
     transform: rotate(30deg);
-    
+
     z-index: -1;
 }
   
