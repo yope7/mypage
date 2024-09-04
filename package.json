@@ -23,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "all": "npm run deploy && git add . && git commit -m \"Deploy to GitHub Pages\" && git push origin main || echo 'Push failed. Check your changes and try again.'"
   },
   "eslintConfig": {
     "extends": [
