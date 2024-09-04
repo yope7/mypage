@@ -54,7 +54,7 @@ const PageContent = ({ title }) => (
 
 export default function App() {
   return (
-    <Router>
+    <Router basename="mypage">
       <div className="app">
         <NavBar />
         <Routes>
