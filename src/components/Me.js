@@ -133,6 +133,7 @@ const Me = () => {
             マルチメディア工学専攻
           </h1>
           <h2 className="hero-subtitle">野口祥生</h2>
+
           <p className="hero-description">ポートフォリオページ</p>
           <motion.a
             href="#projects"
@@ -174,6 +175,13 @@ const Me = () => {
         animate={controls}
         transition={{ duration: 0.8 }}
       >
+        <div class="bear">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+        <div class="arm"></div>
+        <div class="device"></div>
+        </div>
         <h2 className="section-title">Skills</h2>
         <div className="skills-grid">
           {skillsData.map((skill, index) => (
