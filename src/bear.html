@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Improved CSS Bear Illustration</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .bear {
+            position: relative;
+            width: 200px;
+            height: 180px;
+            background-color: white;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+        }
+
+        /* Ears */
+        .bear::before, .bear::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 50%;
+            top: -20px;
+        }
+
+        .bear::before { left: 10px; }
+        .bear::after { right: 10px; }
+
+        /* Eyes */
+        .eye {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: black;
+            border-radius: 50%;
+            top: 60px;
+        }
+
+        .eye.left { left: 60px; }
+        .eye.right { right: 60px; }
+
+        /* Nose */
+        .nose {
+            position: absolute;
+            width: 18px;
+            height: 12px;
+            background-color: black;
+            border-radius: 50%;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Device */
+        .device {
+            position: absolute;
+            width: 50px;
+            height: 80px;
+            background-color: #008000;
+            border-radius: 8px;
+            bottom: -10px;
+            right: -20px;
+            transform: rotate(15deg);
+        }
+
+        /* Arm */
+        .arm {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            background-color: white;
+            bottom: -5px;
+            right: 10px;
+            border-radius: 20px;
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="bear">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+        <div class="arm"></div>
+        <div class="device"></div>
+    </div>
+</body>
+</html>
