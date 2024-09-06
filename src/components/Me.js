@@ -17,7 +17,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+
+import { Hobby } from './Hobby';
 
 
 import foxImage from '../img/fox.png'; // srcディレクトリ内の画像をインポート
@@ -107,17 +108,6 @@ const Pupil = styled('div')({
   left: '50%',
   transform: 'translate(-50%, -50%)',
 });
-const GalleryContainer = styled('div')({
-  columnCount: 3,
-  columnGap: '16px',
-  padding: '16px',
-  '@media (max-width: 800px)': {
-    columnCount: 2,
-  },
-  '@media (max-width: 500px)': {
-    columnCount: 1,
-  },
-});
 
 const ImageWrapper = styled('div')({
   breakInside: 'avoid',
@@ -163,40 +153,6 @@ const ProjectInfo = styled(Box)({
 });
 const AnimatedImageWrapper = motion(ImageWrapper);
 
-const MasonryGallery = ({ hobbies }) => {
-  return (
-    <GalleryContainer>
-      {hobbies.map((hobby, index) => (
-        <HobbyCard key={index} hobby={hobby} index={index} />
-      ))}
-    </GalleryContainer>
-  );
-};
-
-
-const HobbyImage = styled('img')({
-  width: '60%',
-  height: 'auto',
-  marginBottom: '20px',
-});
-
-const HobbiesContainer = styled('div')({
-  height: '100vh',
-  position: 'relative',
-  overflow: 'hidden',
-});
-
-const HobbiesTrack = styled('div')(({ scrollPosition }) => ({
-  display: 'flex',
-  transition: 'transform 0.1s linear',
-  transform: `translateX(-${scrollPosition}px)`,
-}));
-
-const HobbyCard = styled(Card)({
-  flex: '0 0 300px',
-  margin: '0 20px',
-  height: '400px',
-});
 
 // Main component
 const Portfolio = () => {
@@ -204,11 +160,9 @@ const Portfolio = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [activeSection, setActiveSection] = useState('hero');
   const bearRef = useRef(null);
-  const hobbiesRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isHorizontalScrolling, setIsHorizontalScrolling] = useState(false);
   const [isHorizontalScrollComplete, setIsHorizontalScrollComplete] = useState(false);
-
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -240,35 +194,35 @@ const Portfolio = () => {
       
     ) => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-    useEffect(() => {
-      const handleScroll = (e) => {
-        const hobbiesElement = hobbiesRef.current;
-        if (!hobbiesElement) return;
+    // useEffect(() => {
+    //   const handleScroll = (e) => {
+    //     const hobbiesElement = hobbiesRef.current;
+    //     if (!hobbiesElement) return;
 
-        const rect = hobbiesElement.getBoundingClientRect();
-        const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight;
+    //     const rect = hobbiesElement.getBoundingClientRect();
+    //     const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight;
 
-        if (isInView && !isHorizontalScrollComplete) {
-          e.preventDefault();
-          setIsHorizontalScrolling(true);
-          setScrollPosition(prev => {
-            const newPosition = prev + e.deltaY;
-            const maxScroll = hobbiesElement.scrollWidth - hobbiesElement.clientWidth;
-            console.log('Scroll Position:', newPosition, 'Max Scroll:', maxScroll); // デバッグ用
-            if (newPosition >= maxScroll) {
-              setIsHorizontalScrollComplete(true);
-              setIsHorizontalScrolling(false);
-            }
-            return Math.max(0, Math.min(newPosition, maxScroll));
-          });
-        } else if (isHorizontalScrollComplete) {
-          setIsHorizontalScrolling(false);
-        }
-      };
+    //     if (isInView && !isHorizontalScrollComplete) {
+    //       e.preventDefault();
+    //       setIsHorizontalScrolling(true);
+    //       setScrollPosition(prev => {
+    //         const newPosition = prev + e.deltaY;
+    //         const maxScroll = hobbiesElement.scrollWidth - hobbiesElement.clientWidth;
+    //         console.log('Scroll Position:', newPosition, 'Max Scroll:', maxScroll); // デバッグ用
+    //         if (newPosition >= maxScroll) {
+    //           setIsHorizontalScrollComplete(true);
+    //           setIsHorizontalScrolling(false);
+    //         }
+    //         return Math.max(0, Math.min(newPosition, maxScroll));
+    //       });
+    //     } else if (isHorizontalScrollComplete) {
+    //       setIsHorizontalScrolling(false);
+    //     }
+    //   };
 
-      window.addEventListener('wheel', handleScroll, { passive: false });
-      return () => window.removeEventListener('wheel', handleScroll);
-    }, [isHorizontalScrollComplete]);
+    //   window.addEventListener('wheel', handleScroll, { passive: false });
+    //   return () => window.removeEventListener('wheel', handleScroll);
+    // }, [isHorizontalScrollComplete]);
 
   const Me = () => {
     return (
@@ -291,20 +245,7 @@ const Portfolio = () => {
     );
   };
 
-  const HobbyGallery = ({ images }) => {
-    return (
-    <Box sx={{ flexGrow: 1, bgcolor:'#dfdfdf' }}>
-      <Box my={4}>
-        <Typography variant="h4" gutterBottom align="center">
-          Hobbies
-        </Typography>
-        <MasonryGallery hobbies={hobbiesData} />
-      </Box>
 
-      {/* ... (他のセクションはそのまま) */}
-    </Box>
-    );
-  };
 
   const skillsData = [
     { name: 'Web Development', level: 90 },
@@ -319,15 +260,6 @@ const Portfolio = () => {
     { name: 'Project 1', description: 'A cool web app', image:foxImage },
     { name: 'Project 2', description: 'ML-powered tool', image:foxImage },
     { name: 'Project 3', description: 'Responsive website', image: foxImage },
-  ];
-
-  const hobbiesData = [
-    { name: 'Cycling', description: 'Exploring nature on two wheels', image: foxImage },
-    { name: 'Photography', description: 'Capturing moments in time', image: foxImage },
-    { name: 'Gaming', description: 'Immersing in virtual worlds', image: foxImage },
-    { name: 'Swimming', description: 'Staying fit in the water', image: foxImage },
-    { name: 'Cooking', description: 'Experimenting with flavors', image: foxImage },
-    { name: 'Traveling', description: 'Discovering new cultures', image: foxImage },
   ];
 
   return (
@@ -425,35 +357,7 @@ const Portfolio = () => {
           </Grid>
         </Box>
 
-
-        <HobbiesContainer ref={hobbiesRef}>
-        <Typography variant="h4" gutterBottom align="center">
-          趣味
-        </Typography>
-        <HobbiesTrack scrollPosition={scrollPosition}>
-          {hobbiesData.map((hobby, index) => (
-            <HobbyCard key={index}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={hobby.image}
-                alt={hobby.name}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
-                  {hobby.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {hobby.description}
-                </Typography>
-              </CardContent>
-            </HobbyCard>
-          ))}
-        </HobbiesTrack>
-      </HobbiesContainer>
-      
-
-        
+        <Hobby />
 
         <Box my={4}>
           <Typography variant="h4" gutterBottom align="center">
