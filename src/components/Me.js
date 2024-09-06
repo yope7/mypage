@@ -18,7 +18,8 @@ import {
 import { styled } from '@mui/system';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import HorizontalScrollHobbies from './HorizontalScrollHobbies.js';
+
+
 import foxImage from '../img/fox.png'; // srcディレクトリ内の画像をインポート
 
 // Styled components
@@ -172,39 +173,30 @@ const MasonryGallery = ({ hobbies }) => {
   );
 };
 
-const HobbyCard = ({ hobby, index }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
 
-  const cardVariants = {
-    hidden: { x: 100, opacity: 0 },
-    visible: { 
-      x: 0, 
-      opacity: 1,
-      transition: { 
-        duration: 0.5, 
-        delay: Math.max(0, index - 2) * 0.2  // 3つ目以降のカードにディレイを追加
-      }
-    }
-  };
+const HobbyImage = styled('img')({
+  width: '60%',
+  height: 'auto',
+  marginBottom: '20px',
+});
 
-  return (
-    <AnimatedImageWrapper
-      ref={ref}
-      variants={cardVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-    >
-      <Image src={hobby.image} alt={hobby.name} />
-      <ProjectInfo>
-        <Typography variant="h6" gutterBottom>{hobby.name}</Typography>
-        <Typography variant="body2" color="text.secondary">{hobby.description}</Typography>
-      </ProjectInfo>
-    </AnimatedImageWrapper>
-  );
-};
+const HobbiesContainer = styled('div')({
+  height: '100vh',
+  position: 'relative',
+  overflow: 'hidden',
+});
+
+const HobbiesTrack = styled('div')(({ scrollPosition }) => ({
+  display: 'flex',
+  transition: 'transform 0.1s linear',
+  transform: `translateX(-${scrollPosition}px)`,
+}));
+
+const HobbyCard = styled(Card)({
+  flex: '0 0 300px',
+  margin: '0 20px',
+  height: '400px',
+});
 
 // Main component
 const Portfolio = () => {
@@ -212,6 +204,10 @@ const Portfolio = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [activeSection, setActiveSection] = useState('hero');
   const bearRef = useRef(null);
+  const hobbiesRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isHorizontalScrolling, setIsHorizontalScrolling] = useState(false);
+  const [isHorizontalScrollComplete, setIsHorizontalScrollComplete] = useState(false);
 
 
   useEffect(() => {
@@ -244,6 +240,35 @@ const Portfolio = () => {
       
     ) => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+    useEffect(() => {
+      const handleScroll = (e) => {
+        const hobbiesElement = hobbiesRef.current;
+        if (!hobbiesElement) return;
+
+        const rect = hobbiesElement.getBoundingClientRect();
+        const isInView = rect.top <= 0 && rect.bottom >= window.innerHeight;
+
+        if (isInView && !isHorizontalScrollComplete) {
+          e.preventDefault();
+          setIsHorizontalScrolling(true);
+          setScrollPosition(prev => {
+            const newPosition = prev + e.deltaY;
+            const maxScroll = hobbiesElement.scrollWidth - hobbiesElement.clientWidth;
+            console.log('Scroll Position:', newPosition, 'Max Scroll:', maxScroll); // デバッグ用
+            if (newPosition >= maxScroll) {
+              setIsHorizontalScrollComplete(true);
+              setIsHorizontalScrolling(false);
+            }
+            return Math.max(0, Math.min(newPosition, maxScroll));
+          });
+        } else if (isHorizontalScrollComplete) {
+          setIsHorizontalScrolling(false);
+        }
+      };
+
+      window.addEventListener('wheel', handleScroll, { passive: false });
+      return () => window.removeEventListener('wheel', handleScroll);
+    }, [isHorizontalScrollComplete]);
 
   const Me = () => {
     return (
@@ -401,12 +426,32 @@ const Portfolio = () => {
         </Box>
 
 
-        <Box>
+        <HobbiesContainer ref={hobbiesRef}>
         <Typography variant="h4" gutterBottom align="center">
-          Hobbies
+          趣味
         </Typography>
-        <HorizontalScrollHobbies hobbies={hobbiesData} />
-      </Box>
+        <HobbiesTrack scrollPosition={scrollPosition}>
+          {hobbiesData.map((hobby, index) => (
+            <HobbyCard key={index}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={hobby.image}
+                alt={hobby.name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h6" component="div">
+                  {hobby.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {hobby.description}
+                </Typography>
+              </CardContent>
+            </HobbyCard>
+          ))}
+        </HobbiesTrack>
+      </HobbiesContainer>
+      
 
         
 
