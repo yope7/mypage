@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useScroll, useInView  } from 'react';
 import { 
   AppBar, 
   Toolbar, 
@@ -19,9 +19,11 @@ import { styled } from '@mui/system';
 import { motion } from 'framer-motion';
 
 import { Hobby } from './Hobby';
+import "../styles/Me.css";
 
 
 import foxImage from '../img/fox.png'; // srcディレクトリ内の画像をインポート
+import { HorizontalScroll } from './HorizontalScroll';
 
 // Styled components
 const CenteredBox = styled(Box)({
@@ -224,66 +226,65 @@ const Portfolio = () => {
     //   return () => window.removeEventListener('wheel', handleScroll);
     // }, [isHorizontalScrollComplete]);
 
-  const Me = () => {
+    const Me = () => {
+      return (
+        <motion.div
+          animate={{ x: 100 }}
+          transition={{ type: "spring", stiffness: 100 }}>
+          <Grid container spacing={4} alignItems="center" direction='row'>
+            <Grid item md={3} xs={4} >
+              <img 
+                src={foxImage}
+                alt="My-icon" 
+                style={{ width: '100%', borderRadius: '50%' }} 
+              />
+            </Grid>
+            <Grid item md={9} xs={8}>
+              <Typography>
+                Web開発と機械学習の分野で5年以上の経験を持つエンジニアです。
+                最新の技術トレンドに常に注目し、効率的で革新的なソリューションの開発に情熱を注いでいます。
+                趣味の経験を活かし、ユーザー体験を重視した直感的なインターフェースの設計を得意としています。(サンプル)
+              </Typography>
+            </Grid>
+          </Grid>
+        </motion.div>
+      );
+    };
+  
+    const skillsData = [
+      { name: 'Web Development', level: 90 },
+      { name: 'Machine Learning', level: 85 },
+      { name: 'React', level: 95 },
+      { name: 'Python', level: 90 },
+      { name: 'Data Analysis', level: 80 },
+      { name: 'UI/UX Design', level: 75 },
+    ];
+  
+    const projectsData = [
+      { name: 'Project 1', description: 'A cool web app', image:foxImage },
+      { name: 'Project 2', description: 'ML-powered tool', image:foxImage },
+      { name: 'Project 3', description: 'Responsive website', image: foxImage },
+    ];
+  
     return (
-      <Grid container spacing={4} alignItems="center" direction='row'>
-        <Grid item md={3} xs={4} >
-          <img 
-            src={foxImage}
-            alt="My-icon" 
-            style={{ width: '100%', borderRadius: '50%' }} 
-          />
-        </Grid>
-        <Grid item md={13} style={{ flex: 1}}>
-          <Typography>
-            Web開発と機械学習の分野で5年以上の経験を持つエンジニアです。
-            最新の技術トレンドに常に注目し、効率的で革新的なソリューションの開発に情熱を注いでいます。
-            趣味の経験を活かし、ユーザー体験を重視した直感的なインターフェースの設計を得意としています。(サンプル)
-          </Typography>
-        </Grid>
-      </Grid>
-    );
-  };
-
-
-
-  const skillsData = [
-    { name: 'Web Development', level: 90 },
-    { name: 'Machine Learning', level: 85 },
-    { name: 'React', level: 95 },
-    { name: 'Python', level: 90 },
-    { name: 'Data Analysis', level: 80 },
-    { name: 'UI/UX Design', level: 75 },
-  ];
-
-  const projectsData = [
-    { name: 'Project 1', description: 'A cool web app', image:foxImage },
-    { name: 'Project 2', description: 'ML-powered tool', image:foxImage },
-    { name: 'Project 3', description: 'Responsive website', image: foxImage },
-  ];
-
-  return (
-    <Box sx={{ flexGrow: 1, bgcolor:'#dfdfdf' }}>
-      <AppBar position="fixed">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            野口祥生のポートフォリオ
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Toolbar /> {/* This empty Toolbar is for spacing */}
-
-      <HeroSection>
-        <WaterEffect />
-        <PoolTiles />
-        <PoolEdge style={{ top: 0 }} />
-        <PoolEdge style={{ bottom: 0 }} />
-        <Container maxWidth="md">
-          <Box sx={{ textAlign: 'center', color: 'common.white', zIndex: 10, position: 'relative' }}>
+      <Box sx={{ flexGrow: 1, bgcolor: '#dfdfdf' }}>
+        <AppBar position="fixed">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              野口祥生のポートフォリオ
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Toolbar />
+  
+        <HeroSection>
+          <WaterEffect />
+          <PoolTiles />
+          <PoolEdge style={{ top: 0 }} />
+          <PoolEdge style={{ bottom: 0 }} />
+          <Box sx={{ textAlign: 'center', color: 'common.white', zIndex: 10, position: 'relative', width: '100%' }}>
             <Typography variant={isMobile ? 'h5' : 'h4'} gutterBottom>
-              大阪大学 大学院
-              情報科学研究科
-              マルチメディア工学専攻
+              大阪大学 大学院 情報科学研究科 マルチメディア工学専攻
             </Typography>
             <Typography variant={isMobile ? 'h3' : 'h2'} gutterBottom>
               野口祥生
@@ -295,92 +296,96 @@ const Portfolio = () => {
               作品を見る
             </Button>
           </Box>
-        </Container>
-      </HeroSection>
-
-      <Container maxWidth="lg">
-        <Box my={4}>
+        </HeroSection>
+  
+        <Box sx={{ width: '100%', padding: theme.spacing(4, 2) }}>
           <Typography variant="h4" gutterBottom align="center">
             About Me
           </Typography>
-          <Grid container spacing={1} alignItems="center">
-              <Me />
-          </Grid>
+          <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <Me />
+          </Box>
         </Box>
-
-        <Box my={4}>
+  
+        <Box sx={{ width: '100%', padding: theme.spacing(4, 2), bgcolor: 'background.paper' }}>
           <Typography variant="h4" gutterBottom align="center">
             Skills
           </Typography>
-
-          <Grid container spacing={2}>
-            {skillsData.map((skill) => (
-              <Grid item xs={12} sm={6} md={4} key={skill.name}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6" component="div" mb={2}>
-                      {skill.name}
-                    </Typography>
-                    <LinearProgress variant="determinate" value={skill.level} />
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+          <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <Grid container spacing={2}>
+              {skillsData.map((skill) => (
+                <Grid item xs={12} sm={6} md={4} key={skill.name}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6" component="div" mb={2}>
+                        {skill.name}
+                      </Typography>
+                      <LinearProgress variant="determinate" value={skill.level} />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Box>
-
-        <Box my={4}>
+  
+        <Box sx={{ width: '100%', padding: theme.spacing(4, 2) }}>
           <Typography variant="h4" gutterBottom align="center">
             Projects
           </Typography>
-          <Grid container spacing={2}>
-            {projectsData.map((project) => (
-              <Grid item xs={12} sm={6} md={4} key={project.name}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={project.image}
-                    alt={project.name}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {project.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {project.description}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+          <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <Grid container spacing={2}>
+              {projectsData.map((project) => (
+                <Grid item xs={12} sm={6} md={4} key={project.name}>
+                  <Card>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={project.image}
+                      alt={project.name}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {project.name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {project.description}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Box>
+  
 
-        <Hobby />
+        <HorizontalScroll />
 
-        <Box my={4}>
+  
+        <Box sx={{ width: '100%', padding: theme.spacing(4, 2), bgcolor: 'background.paper' }}>
           <Typography variant="h4" gutterBottom align="center">
             Contact Me
           </Typography>
-          <CenteredBox>
-            <Bear ref={bearRef}>
-              <Eye className="eye" style={{ left: 60 }}><Pupil className="pupil" /></Eye>
-              <Eye className="eye" style={{ right: 60 }}><Pupil className="pupil" /></Eye>
-            </Bear>
-          </CenteredBox>
-          <Box component="form" noValidate autoComplete="off">
-            <TextField fullWidth margin="normal" label="Name" variant="outlined" />
-            <TextField fullWidth margin="normal" label="Email" variant="outlined" />
-            <TextField fullWidth margin="normal" label="Message" variant="outlined" multiline rows={4} />
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              Send Message
-            </Button>
+          <Box sx={{ maxWidth: '600px', margin: '0 auto' }}>
+            <CenteredBox>
+              <Bear ref={bearRef}>
+                <Eye className="eye" style={{ left: 60 }}><Pupil className="pupil" /></Eye>
+                <Eye className="eye" style={{ right: 60 }}><Pupil className="pupil" /></Eye>
+              </Bear>
+            </CenteredBox>
+            <Box component="form" noValidate autoComplete="off">
+              <TextField fullWidth margin="normal" label="Name" variant="outlined" />
+              <TextField fullWidth margin="normal" label="Email" variant="outlined" />
+              <TextField fullWidth margin="normal" label="Message" variant="outlined" multiline rows={4} />
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                Send Message
+              </Button>
+            </Box>
           </Box>
         </Box>
-      </Container>
-    </Box>
-  );
-};
-
-export default Portfolio;
+      </Box>
+    );
+  };
+  
+  export default Portfolio;

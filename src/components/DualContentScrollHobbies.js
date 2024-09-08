@@ -35,37 +35,50 @@ const HobbyImage = styled('img')({
 
 const ScrollControlledHobbies = ({ hobbies }) => {
   const containerRef = useRef(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollPositionRef = useRef(0);
+  const isScrollingRef = useRef(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const container = containerRef.current;
-        const rect = container.getBoundingClientRect();
-        const containerTop = rect.top;
-        const containerHeight = rect.height;
-        const viewportHeight = window.innerHeight;
+    const container = containerRef.current;
+    if (!container) return;
 
-        // コンテナが画面に入った時点からスクロール開始
-        if (containerTop <= 0 && containerTop > -containerHeight) {
-          const progress = -containerTop / containerHeight;
-          setScrollPosition(Math.min(1, progress));
-        } else if (containerTop > 0) {
-          setScrollPosition(0);
-        } else {
-          setScrollPosition(1);
+    const handleScroll = (e) => {
+      const rect = container.getBoundingClientRect();
+      const containerTop = rect.top;
+      const containerHeight = rect.height;
+
+      if (containerTop <= 0 && containerTop > -containerHeight) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!isScrollingRef.current) {
+          isScrollingRef.current = true;
+          document.body.style.overflow = 'hidden';
+        }
+
+        const progress = -containerTop / containerHeight;
+        scrollPositionRef.current = Math.min(1, Math.max(0, progress));
+        container.style.setProperty('--scroll-progress', scrollPositionRef.current);
+      } else {
+        if (isScrollingRef.current) {
+          isScrollingRef.current = false;
+          document.body.style.overflow = '';
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: false });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [hobbies.length]);
+
+
 
   const totalWidth = hobbies.length * 50; // 各カードの幅が50%なので
   const scrollWidth = totalWidth - 100; // 100%は初期表示の2つのカード分
 
   return (
+    <div ref={containerRef} className="scroll-controlled-hobbies">a
+ 
     <Box style={{ height: `${200}vh` }}>
       <HobbiesContainer ref={containerRef}>
         <HobbiesTrack style={{ transform: `translateX(${-scrollPosition * scrollWidth}%)` }}>
@@ -79,6 +92,7 @@ const ScrollControlledHobbies = ({ hobbies }) => {
         </HobbiesTrack>
       </HobbiesContainer>
     </Box>
+    </div>
   );
 };
 
