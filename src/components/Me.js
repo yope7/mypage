@@ -359,9 +359,9 @@ const Portfolio = () => {
           </Box>
         </Box>
   
-
-        <HorizontalScroll />
-
+        <Box>
+          <HorizontalScroll />
+        </Box>
   
         <Box sx={{ width: '100%', padding: theme.spacing(4, 2), bgcolor: 'background.paper' }}>
           <Typography variant="h4" gutterBottom align="center">

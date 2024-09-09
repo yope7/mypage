@@ -1,47 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { motion, useScroll, useInView } from "framer-motion";
+import foxImage from '../img/fox.png';
+import cycling from '../img/cycling.jpg';
+import treeBack from '../img/back/ki.png';
+import waterBack from '../img/back/water.jpg';
+import waterBackbig from '../img/back/water_big.jpg';
 
 const cards = [
-    {
-        "title": "Card 1",
-        "description": "This is a description for card 1",
-    },
-    {
-        "title": "Card 2",
-        "description": "This is a description for card 2",
-    },
-    {
-        "title": "Card 3",
-        "description": "This is a description for card 3",
-    },
-    {
-        "title": "Card 4",
-        "description": "This is a description for card 4",
-    },
-    {
-        "title": "Card 5",
-        "description": "This is a description for card 5",
-    },
-    {
-        "title": "Card 6",
-        "description": "This is a description for card 6",
-    },
-    {
-        "title": "Card 7",
-        "description": "This is a description for card 7",
-    },
-    {
-        "title": "Card 8",
-        "description": "This is a description for card 8",
-    },
-    {
-        "title": "Card 9",
-        "description": "This is a description for card 9",
-    },
-    {
-        "title": "Card 10",
-        "description": "This is a description for card 10",
-    },
+    { name: 'Cycling', description: '定期的に自転車で旅をしています。京都や神戸など、遠すぎず、近すぎずな場所にサイクリングした時の達成感は最高です。', image: cycling , back: waterBack},
+    { name: 'Photography', description: 'Capturing moments in time', image: foxImage,  back: waterBack},
+    { name: 'Gaming', description: 'Immersing in virtual worlds', image: foxImage,  back: waterBack},
+    { name: 'Swimming', description: 'Staying fit in the water', image: foxImage,  back: waterBack},
+    { name: 'Cooking', description: 'Experimenting with flavors', image: foxImage,  back: waterBack},
+    { name: 'Traveling', description: 'Discovering new cultures', image: foxImage, back: waterBack},
 ];
 
 // カードコンポーネント
@@ -90,23 +67,58 @@ export function Cards({ containerRef, transformXPercent }) {
                 // transition: "transform 0.5s",
             }}
         >
-            {cards.map((card, idx) => (
-                <div
-                    key={idx}
-                    style={{
-                        // paddingとborderの分だけ引いて補正
-                        width: `${cardWidth - 40 - 2}px`,
-                        height: "400px",
-                        background: "white",
-                        padding: `20px`,
-                        border: "1px solid black",
-                        borderRadius: "10px",
-                    }}
-                >
-                    <h1>{card.title}</h1>
-                    <p>{card.description}</p>
-                </div>
-            ))}
+ {cards.map((card, idx) => (
+    <Card
+        key={idx}
+        style={{
+            width: `${cardWidth - 40 - 2}px`,
+            height: "400px",
+            padding: `20px`,
+            border: "1px solid black",
+            borderRadius: "10px",
+            position: "relative", // 追加: 相対位置指定
+            overflow: "hidden", // 追加: はみ出た部分を隠す
+            backgroundColor: "transparent",
+            boxShadow: "2px 2px 0px rgba(0, 0, 0, 0.5)", // 影を追加
+        }}
+    >
+        {/* 追加: 背景画像用の疑似要素 */}
+        <div
+            style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `url(${card.back})`,
+                backgroundSize: "cover",
+                opacity: 0.8, // 透明度を設定
+                zIndex: -1, // コンテンツの背面に配置
+
+            }}
+        />
+        <CardMedia
+            style={{ opacity: "1", }}
+            sx={{ height: 180 }}
+            image={card.image}
+        />
+        <CardContent 
+            style={{
+                color: "#100202",
+            }}>
+            <Typography gutterBottom variant="h5" component="div">
+                {card.name}
+            </Typography>
+            <Typography variant="body2">
+                {card.description}
+            </Typography>
+        </CardContent>
+        <CardActions>
+            <Button size="small">Share</Button>
+            <Button size="small">Learn More</Button>
+        </CardActions>
+    </Card>
+))}
         </div>
     );
 }
@@ -147,8 +159,11 @@ export function HorizontalScroll() {
 
     return (
         <div style={{ 
-            height: "200vh",
+            height: "340vh",
             }}>
+                <Typography variant="h4" gutterBottom align="center" display="block">
+                    Contact Me
+                </Typography>
             <motion.div
                 style={{
                     position: "absolute",
@@ -156,35 +171,43 @@ export function HorizontalScroll() {
                     left: 0,
                     right: 0,
                     height: "0px",
-                    background: "red",
+                    // background: "red",
                     transformOrigin: "0%",
                     scaleX: scrollYProgress,
-                    backgtound: "red",
                 }}
             />
+            
             <div
                 ref={scrollRef}
                 style={{
-                    height: "200vh",
-                    position: "sticky",
-                    top: "60vh",
+                    paddingTop: "20vh",
+                    height: "300vh",
 
 
-                    background: "orange",
-                    overflowX: "hidden",
-                    overflowY: "hidden",
-                    whiteSpace: "nowrap",
+                    // background: "orange",
+                    // whiteSpace: "nowrap",
                     // display: "flex",
                     alignItems: "center",
                     scrollbarWidth: "none",
                     msOverflowStyle: "none",
+                    contain : "paint",
+                    backgroundImage: `url(${waterBackbig})`,
                 }}
             >
+
+                <div style={
+                    {   
+                        display : "flex",
+                        position: "sticky",
+                        top: "30vh",
+                }}>
+                    
                 <Cards
                     containerRef={scrollRef}
                     transformXPercent={transformXPercent}
                 />
             </div>
         </div>
+    </div>
     );
 }

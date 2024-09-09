@@ -1,17 +1,21 @@
 {
   "files": {
-    "main.css": "/mypage/static/css/main.47063795.css",
-    "main.js": "/mypage/static/js/main.b20cd1fe.js",
+    "main.css": "/mypage/static/css/main.cbe516ec.css",
+    "main.js": "/mypage/static/js/main.6fec1edb.js",
     "static/js/453.95195125.chunk.js": "/mypage/static/js/453.95195125.chunk.js",
+    "static/media/ki.png": "/mypage/static/media/ki.5357d2d2506b5264b74a.png",
+    "static/media/cycling.jpg": "/mypage/static/media/cycling.84ae231a9b4740240336.jpg",
+    "static/media/water_big.jpg": "/mypage/static/media/water_big.808bf55c344c2cf2778b.jpg",
+    "static/media/water.jpg": "/mypage/static/media/water.bc1343d634a76f2e6ec0.jpg",
     "static/media/fox.png": "/mypage/static/media/fox.617a4915f95b3f15341f.png",
     "static/media/logo.svg": "/mypage/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/mypage/index.html",
-    "main.47063795.css.map": "/mypage/static/css/main.47063795.css.map",
-    "main.b20cd1fe.js.map": "/mypage/static/js/main.b20cd1fe.js.map",
+    "main.cbe516ec.css.map": "/mypage/static/css/main.cbe516ec.css.map",
+    "main.6fec1edb.js.map": "/mypage/static/js/main.6fec1edb.js.map",
     "453.95195125.chunk.js.map": "/mypage/static/js/453.95195125.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.47063795.css",
-    "static/js/main.b20cd1fe.js"
+    "static/css/main.cbe516ec.css",
+    "static/js/main.6fec1edb.js"
   ]
 }
