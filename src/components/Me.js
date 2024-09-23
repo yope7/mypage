@@ -23,6 +23,7 @@ import "../styles/Me.css";
 
 
 import foxImage from '../img/fox.png'; // srcディレクトリ内の画像をインポート
+import Water from '../img/back/water_big.jpg'; // srcディレクトリ内の画像をインポート
 import { HorizontalScroll } from './HorizontalScroll';
 
 // Styled components
@@ -267,7 +268,7 @@ const Portfolio = () => {
     ];
   
     return (
-      <Box sx={{ flexGrow: 1, bgcolor: '#dfdfdf' }}>
+      <Box sx={{ flexGrow: 1}} >
         <AppBar position="fixed">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

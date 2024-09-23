@@ -8,6 +8,7 @@ import Page1 from './components/TrumpCardPortfolio';
 // import Main from './components/Main';
 import Me from './components/Me';
 import './styles/Me.css';
+import Cycle from './components/cycle/Folio';
 
 const NavLink = ({ to, children, onClick }) => (
   <Link to={to} onClick={onClick} className="nav-link">
@@ -31,9 +32,10 @@ const NavBar = () => {
       <div className="navbar-container">
         <div className="navbar-logo">MyApp</div>
         <div className={`navbar-links ${isOpen ? 'active' : ''}`}>
-          <NavLink to="/" onClick={closeMenu}>Home</NavLink>
+          {/* <NavLink to="/" onClick={closeMenu}>Home</NavLink> */}
           <NavLink to="/components/TrumpCardPortfolio" onClick={closeMenu}>Page 1</NavLink>
           <NavLink to="./components/Me" onClick={closeMenu}>ページ</NavLink>
+          <NavLink to="/components/cycle/Folio" onClick={closeMenu}>cycle</NavLink>
           {/* <NavLink to="/page3" onClick={closeMenu}>Page 3</NavLink> */}
         </div>
         <button className="navbar-toggle" onClick={toggleMenu}>
@@ -56,12 +58,13 @@ export default function App() {
   return (
     <Router basename="mypage">
       <div className="app">
-        <NavBar />
+        {/* <NavBar /> */}
         <Routes>
-          <Route path="/" element={<PageContent title="Home" />} />
+          {/* <Route path="/" element={<PageContent title="Home" />} /> */}
           <Route path="/components/TrumpCardPortfolio" element={<TrumpCardPortfolio />} />
           <Route path="/components/Me" element={<Me />} />
           <Route path="/page3" element={<PageContent title="Page 3" />} />
+          <Route path="/components/cycle/Folio" element={<Cycle />} />
         </Routes>
       </div>
     </Router>

@@ -11,6 +11,7 @@ import cycling from '../img/cycling.jpg';
 import treeBack from '../img/back/ki.png';
 import waterBack from '../img/back/water.jpg';
 import waterBackbig from '../img/back/water_big.jpg';
+import { ins } from "framer-motion/client";
 
 const cards = [
     { name: 'Cycling', description: '定期的に自転車で旅をしています。京都や神戸など、遠すぎず、近すぎずな場所にサイクリングした時の達成感は最高です。', image: cycling , back: waterBack},
@@ -62,6 +63,7 @@ export function Cards({ containerRef, transformXPercent }) {
                 gap: `${cardGap}px`,
                 padding: `${containerPadding}px`,
                 transform: `translateX(-${transformX}px)`,
+                // clipPath: 'inset(0)', // クリッピングパスを設定
 
 
                 // transition: "transform 0.5s",
@@ -80,6 +82,9 @@ export function Cards({ containerRef, transformXPercent }) {
             overflow: "hidden", // 追加: はみ出た部分を隠す
             backgroundColor: "transparent",
             boxShadow: "2px 2px 0px rgba(0, 0, 0, 0.5)", // 影を追加
+            // backgroundblur: "blur(10px)",
+
+
         }}
     >
         {/* 追加: 背景画像用の疑似要素 */}
@@ -90,10 +95,11 @@ export function Cards({ containerRef, transformXPercent }) {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                backgroundImage: `url(${card.back})`,
-                backgroundSize: "cover",
-                opacity: 0.8, // 透明度を設定
-                zIndex: -1, // コンテンツの背面に配置
+                // backgroundImage: `url(${card.back})`,
+                // backgroundSize: "cover",
+                // opacity: 0.8, // 透明度を設定
+                // zIndex: 1, // コンテンツの背面に配置
+                // clipPath: 'inset(0)', // クリッピングパスを設定
 
             }}
         />
@@ -182,8 +188,6 @@ export function HorizontalScroll() {
                 style={{
                     paddingTop: "20vh",
                     height: "300vh",
-
-
                     // background: "orange",
                     // whiteSpace: "nowrap",
                     // display: "flex",
@@ -191,7 +195,8 @@ export function HorizontalScroll() {
                     scrollbarWidth: "none",
                     msOverflowStyle: "none",
                     contain : "paint",
-                    backgroundImage: `url(${waterBackbig})`,
+                    
+
                 }}
             >
 
